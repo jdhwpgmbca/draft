@@ -11,9 +11,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.backend.containerPortName }}
       protocol: TCP
-      name: http
+      name: {{ .Values.backend.containerPortName }}
   selector:
     app: {{ template "chart.name" . }}
     release: {{ .Release.Name }}

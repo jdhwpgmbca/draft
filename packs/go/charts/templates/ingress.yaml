@@ -1,6 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "chart.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- $servicePort := .Values.service.port -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -17,13 +18,11 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-  {{- range .Values.ingress.tls }}
-    - hosts:
-      {{- range .hosts }}
+    - secretName: {{ .Values.ingress.tls.secretName }}
+      hosts:
+      {{- range .Values.ingress.tls.hosts }}
         - {{ . }}
       {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
 {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
@@ -33,6 +32,6 @@ spec:
           - path: {{ $ingressPath }}
             backend:
               serviceName: {{ $fullName }}
-              servicePort: http
+              servicePort: {{ $servicePort }}
   {{- end }}
 {{- end }}

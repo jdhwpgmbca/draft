@@ -28,8 +28,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 8080
+            - name: {{ .Values.backend.containerPortName }}
+              containerPort: {{ .Values.backend.containerPort }}
               protocol: TCP
           livenessProbe:
             httpGet:
